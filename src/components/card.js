@@ -1,5 +1,5 @@
 // функция создания карты
-function createCard(card, deleteCard, likeCard, handleOpenPopup, cardTemplate, popupImage) {
+function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTemplate) {
   const clone = cardTemplate.cloneNode(true);
   const cardElement = clone.querySelector('.card');
   const cardImg = cardElement.querySelector('.card__image');
@@ -11,11 +11,7 @@ function createCard(card, deleteCard, likeCard, handleOpenPopup, cardTemplate, p
   cardName.textContent = card.name;
 
   cardImg.addEventListener('click', function () {
-    handleOpenPopup(popupImage);
-    const popupImg = popupImage.querySelector('.popup__image');
-    const popupImgCaption = popupImage.querySelector('.popup__caption');
-    popupImg.src = card.link;
-    popupImgCaption.textContent = card.name;
+    clickCard(popupImage, card)
   });
 
   likeBtn.addEventListener('click', function () {

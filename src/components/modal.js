@@ -1,22 +1,38 @@
 // функция открытия попапа
 function handleOpenPopup(popup) {
-  popup.classList.add('popup_is-animated');
   popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', handleClosePopupOnEsc);
 };
 
 // функция закрытия попапа
-function handleClosePopup() {
-  const popupOpened = document.querySelector('.popup_is-opened');
-  popupOpened.classList.remove('popup_is-opened');
+function handleClosePopup(popup) {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', handleClosePopupOnEsc);
 };
 
 // функция закрытия по кнопке ESC
 function handleClosePopupOnEsc(event) {
   if (event.key === 'Escape') {
     handleClosePopup();
-    document.removeEventListener('keydown', handleClosePopupOnEsc);
   }
 };
 
-export { handleOpenPopup, handleClosePopup };
+// функция закрытия попапа кликом по оверлею
+function handleClosePopupOnOverlay(event) {
+  const popup = document.querySelector('.popup_is-opened');
+  if (event.target === popup) {
+  handleClosePopup(popup);
+  }
+};
+
+// функция открытия попапа с картинкой
+function handleOpenPopupImage(popupImage, card) {
+  handleOpenPopup(popupImage);
+  const popupImg = popupImage.querySelector('.popup__image');
+  const popupImgCaption = popupImage.querySelector('.popup__caption');
+  popupImg.src = card.link;
+  popupImgCaption.textContent = card.name;
+}
+
+
+export { handleOpenPopup, handleClosePopup,handleOpenPopupImage, handleClosePopupOnOverlay };
