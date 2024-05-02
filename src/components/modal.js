@@ -25,14 +25,4 @@ function handleClosePopupOnOverlay(event) {
   }
 };
 
-// функция открытия попапа с картинкой
-function handleOpenPopupImage(popupImage, card) {
-  handleOpenPopup(popupImage);
-  const popupImg = popupImage.querySelector('.popup__image');
-  const popupImgCaption = popupImage.querySelector('.popup__caption');
-  popupImg.src = card.link;
-  popupImgCaption.textContent = card.name;
-}
-
-
-export { handleOpenPopup, handleClosePopup,handleOpenPopupImage, handleClosePopupOnOverlay };
+export { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay };

@@ -2,7 +2,7 @@ import './vendor/fonts.css';
 import './pages/index.css';
 import { initialCards } from './components/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
-import { handleOpenPopup, handleClosePopup, handleOpenPopupImage, handleClosePopupOnOverlay } from './components/modal.js';
+import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -54,17 +54,17 @@ function handleProfileSubmit(evt, nameInput, jobInput) {
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
   handleClosePopup(popupEdit);
-}
+};
 
 //функция заполнения формы новой карты
-function handleCardSubmit(evt, inputPlace, inputLink, cb, aaaForm) {
+function handleCardSubmit(evt, inputPlace, inputLink, cb) {
   evt.preventDefault();
   const newCard = {
     name: inputPlace.value,
     link: inputLink.value
   };
   cb(newCard);
-  aaaForm.reset();
+  placeForm.reset();
   handleClosePopup(popupNewCard);
 };
 
@@ -75,4 +75,13 @@ popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt, nameIn
 placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, inputPlace, inputLink, function(card) {
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
   cardContainer.prepend(cardElement);
-}, placeForm));
+}));
+
+// функция открытия попапа с картинкой
+function handleOpenPopupImage(popupImage, card) {
+  handleOpenPopup(popupImage);
+  const popupImg = popupImage.querySelector('.popup__image');
+  const popupImgCaption = popupImage.querySelector('.popup__caption');
+  popupImg.src = card.link;
+  popupImgCaption.textContent = card.name;
+};
