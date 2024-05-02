@@ -23,12 +23,12 @@ function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTempl
   });
 
   return cardElement;
-};
+}
 
 // функция удаления карты
 function deleteCard(cardElement) {
   cardElement.remove();
-};
+}
 
 // функция лайка карты
 function likeCard(btn) {

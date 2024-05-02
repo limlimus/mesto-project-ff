@@ -22,11 +22,40 @@ const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 
+// функция открытия попапа с картинкой
+function handleOpenPopupImage(popupImage, card) {
+  handleOpenPopup(popupImage);
+  const popupImg = popupImage.querySelector('.popup__image');
+  const popupImgCaption = popupImage.querySelector('.popup__caption');
+  popupImg.src = card.link;
+  popupImgCaption.textContent = card.name;
+};
+
 // создание первых 6ти карт
 initialCards.forEach(function (card) {
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate);
   cardContainer.append(cardElement);
 });
+
+// функция заполнения формы профиля
+function handleProfileSubmit(evt) {
+  evt.preventDefault();
+  profileName.textContent = nameInput.value;
+  profileJob.textContent = jobInput.value;
+  handleClosePopup(popupEdit);
+};
+
+//функция заполнения формы новой карты
+function handleCardSubmit(evt, cb) {
+  evt.preventDefault();
+  const newCard = {
+    name: inputPlace.value,
+    link: inputLink.value
+  };
+  cb(newCard);
+  placeForm.reset();
+  handleClosePopup(popupNewCard);
+};
 
 // слушатели на кнопки, открывающие попапы
 profileEditBtn.addEventListener('click', function() {
@@ -48,40 +77,13 @@ popupBtnCloseList.forEach(function(btn) {
   btn.addEventListener('click', () => handleClosePopup(popupElement));
 });
 
-// функция заполнения формы профиля
-function handleProfileSubmit(evt, nameInput, jobInput) {
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  handleClosePopup(popupEdit);
-};
-
-//функция заполнения формы новой карты
-function handleCardSubmit(evt, inputPlace, inputLink, cb) {
-  evt.preventDefault();
-  const newCard = {
-    name: inputPlace.value,
-    link: inputLink.value
-  };
-  cb(newCard);
-  placeForm.reset();
-  handleClosePopup(popupNewCard);
-};
-
 // слушатель на кнопку сохранения профиля
-popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt, nameInput, jobInput));
+popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt));
 
 // слушатель на кнопку создания новой нарты
-placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, inputPlace, inputLink, function(card) {
+placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(card) {
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
   cardContainer.prepend(cardElement);
 }));
 
-// функция открытия попапа с картинкой
-function handleOpenPopupImage(popupImage, card) {
-  handleOpenPopup(popupImage);
-  const popupImg = popupImage.querySelector('.popup__image');
-  const popupImgCaption = popupImage.querySelector('.popup__caption');
-  popupImg.src = card.link;
-  popupImgCaption.textContent = card.name;
-};
+
