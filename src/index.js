@@ -3,7 +3,7 @@ import './pages/index.css';
 import { initialCards } from './components/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
-import { enableValidation,clearValidation } from './components/validation.js';
+import { enableValidation, clearValidation } from './components/validation.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -45,7 +45,6 @@ function handleProfileSubmit(evt) {
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
   handleClosePopup(popupEdit);
-  enableValidation(popupEdit, validationConfig);
 };
 
 //функция заполнения формы новой карты
@@ -95,13 +94,14 @@ placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(car
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
-  submitBttonSelector: '.popup__button',
+  submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
-//enableValidation(validationConfig);
+enableValidation(placeForm, validationConfig);
+enableValidation(popupProfile, validationConfig);
 // очистка ошибок валидации вызовом clearValidation
-//clearValidation(profileForm, validationConfig);
+//clearValidation(popupProfile, validationConfig);
 
 
