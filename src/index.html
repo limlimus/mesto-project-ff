@@ -50,7 +50,7 @@
               placeholder="Имя"
               minlength="2"
               maxlength="40"
-              pattern="^[A-Za-z0-9а-яА-Я\._-]+$"
+              pattern="[\wа-яА-Я\sёЁ\-]+"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
               <span class="popup__input_type_error name-error"></span>
@@ -60,7 +60,7 @@
               placeholder="Занятие"
               minlength="2"
               maxlength="200"
-              pattern="^[A-Za-z0-9а-яА-Я\._-]+$"
+              pattern="[\wа-яА-Я\sёЁ\-]+"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
               <span class="popup__input_type_error description-error"></span>
@@ -80,7 +80,7 @@
               placeholder="Название"
               minlength="2"
               maxlength="30"
-              pattern="^[\wа-яА-Я\sёЁ-]"
+              pattern="[\wа-яА-Я\sёЁ\-]+"
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
               <span class="popup__input_type_error place-name-error"></span>

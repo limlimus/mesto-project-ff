@@ -102,6 +102,6 @@ const validationConfig = {
 };
 //enableValidation(validationConfig);
 // очистка ошибок валидации вызовом clearValidation
-clearValidation(profileForm, validationConfig);
+//clearValidation(profileForm, validationConfig);
 
 
