@@ -45,15 +45,25 @@
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form" name="edit-profile">
             <input
-              type="text" name="name"
+              type="text" name="name" id="name"
               class="popup__input popup__input_type_name"
               placeholder="Имя"
+              minlength="2"
+              maxlength="40"
+              pattern="^[A-Za-z0-9а-яА-Я\._-]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
+              <span class="popup__input_type_error name-error"></span>
             <input
-              type="text" name="description"
+              type="text" name="description" id="description"
               class="popup__input popup__input_type_description"
               placeholder="Занятие"
+              minlength="2"
+              maxlength="200"
+              pattern="^[A-Za-z0-9а-яА-Я\._-]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
+              <span class="popup__input_type_error description-error"></span>
             <button type="submit" class="button popup__button">Сохранить</button>
           </form>
         </div>
@@ -65,15 +75,21 @@
           <h3 class="popup__title">Новое место</h3>
           <form class="popup__form" name="new-place">
             <input
-              type="text" name="place-name"
+              type="text" name="place-name" id="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              pattern="^[\wа-яА-Я\sёЁ-]"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required>
+              <span class="popup__input_type_error place-name-error"></span>
             <input
-              type="url" name="link"
+              type="url" name="link" id="link"
               class="popup__input popup__input_type_url"
               placeholder="Ссылка на картинку"
               required>
+              <span class="popup__input_type_error link-error"></span>
             <button type="submit" class="button popup__button">Сохранить</button>
           </form>
         </div>

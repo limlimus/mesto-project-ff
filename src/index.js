@@ -3,6 +3,7 @@ import './pages/index.css';
 import { initialCards } from './components/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
+import { enableValidation,clearValidation } from './components/validation.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -21,6 +22,7 @@ const profileEditBtn = document.querySelector('.profile__edit-button');
 const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
+
 
 // функция открытия попапа с картинкой
 function handleOpenPopupImage(popupImage, card) {
@@ -43,6 +45,7 @@ function handleProfileSubmit(evt) {
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
   handleClosePopup(popupEdit);
+  enableValidation(popupEdit, validationConfig);
 };
 
 //функция заполнения формы новой карты
@@ -55,6 +58,7 @@ function handleCardSubmit(evt, cb) {
   cb(newCard);
   placeForm.reset();
   handleClosePopup(popupNewCard);
+  enableValidation(popupNewCard, validationConfig);
 };
 
 // слушатели на кнопки, открывающие попапы
@@ -62,6 +66,7 @@ profileEditBtn.addEventListener('click', function() {
   handleOpenPopup(popupEdit);
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
+  // clearValidation(popupEdit.querySelector(validationConfig.formSelector), validationConfig);
 });
 
 addCardBtn.addEventListener('click', () => handleOpenPopup(popupNewCard));
@@ -85,5 +90,18 @@ placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(car
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
   cardContainer.prepend(cardElement);
 }));
+
+//объект с настройками валидации
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitBttonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+//enableValidation(validationConfig);
+// очистка ошибок валидации вызовом clearValidation
+clearValidation(profileForm, validationConfig);
 
 
