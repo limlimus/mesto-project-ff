@@ -22,6 +22,15 @@ const profileEditBtn = document.querySelector('.profile__edit-button');
 const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
+//объект с настройками валидации
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
 
 
 // функция открытия попапа с картинкой
@@ -57,7 +66,6 @@ function handleCardSubmit(evt, cb) {
   cb(newCard);
   placeForm.reset();
   handleClosePopup(popupNewCard);
-  enableValidation(popupNewCard, validationConfig);
 };
 
 // слушатели на кнопки, открывающие попапы
@@ -65,7 +73,6 @@ profileEditBtn.addEventListener('click', function() {
   handleOpenPopup(popupEdit);
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
-  // clearValidation(popupEdit.querySelector(validationConfig.formSelector), validationConfig);
 });
 
 addCardBtn.addEventListener('click', () => handleOpenPopup(popupNewCard));
@@ -78,7 +85,11 @@ popups.forEach( function(popup) {
 // слушатели на кнопки, закрывающие попапы
 popupBtnCloseList.forEach(function(btn) {
   const popupElement = btn.closest('.popup');
-  btn.addEventListener('click', () => handleClosePopup(popupElement));
+  const formElement = popupElement.querySelector(validationConfig.formSelector)
+  btn.addEventListener('click', () => {
+    handleClosePopup(popupElement);
+    clearValidation(formElement, validationConfig);
+  });
 });
 
 // слушатель на кнопку сохранения профиля
@@ -90,18 +101,7 @@ placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(car
   cardContainer.prepend(cardElement);
 }));
 
-//объект с настройками валидации
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-};
-enableValidation(placeForm, validationConfig);
-enableValidation(popupProfile, validationConfig);
-// очистка ошибок валидации вызовом clearValidation
-//clearValidation(popupProfile, validationConfig);
+
+enableValidation(validationConfig);
 
 
