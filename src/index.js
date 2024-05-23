@@ -4,6 +4,7 @@ import { initialCards } from './components/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
+import { getCurrentProfile, getCurrentCards, editProfile, postNewCard } from './components/api.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -22,6 +23,7 @@ const profileEditBtn = document.querySelector('.profile__edit-button');
 const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
+const profileAvatar = document.querySelector('.profile__image');
 //объект с настройками валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -42,28 +44,23 @@ function handleOpenPopupImage(popupImage, card) {
   popupImgCaption.textContent = card.name;
 };
 
-// создание первых 6ти карт
-initialCards.forEach(function (card) {
-  const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate);
-  cardContainer.append(cardElement);
-});
-
 // функция заполнения формы профиля
 function handleProfileSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
+  editProfile(nameInput.value, jobInput.value).then((profile) => {
+    profileName.textContent = profile.name;
+    profileJob.textContent = profile.about;
+  });
+
   handleClosePopup(popupEdit);
 };
 
 //функция заполнения формы новой карты
 function handleCardSubmit(evt, cb) {
   evt.preventDefault();
-  const newCard = {
-    name: inputPlace.value,
-    link: inputLink.value
-  };
-  cb(newCard);
+  postNewCard(inputPlace.value, inputLink.value).then((newCard)=>{
+    cb(newCard);
+  });
   handleClosePopup(popupNewCard);
 };
 
@@ -99,9 +96,23 @@ popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt));
 
 // слушатель на кнопку создания новой нарты
 placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(card) {
+  console.log(card);
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
   cardContainer.prepend(cardElement);
 }));
+
+Promise.all([getCurrentProfile(), getCurrentCards()]).then((results) => {
+  const profile = results[0];
+  const cardList = results[1];
+  cardList.forEach((function (card) {
+    const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate, card.likes);
+    cardContainer.append(cardElement);
+   }));
+   profileName.textContent = profile.name;
+  profileJob.textContent = profile.about;
+  profileAvatar.style= `background-image: url('${profile.avatar}')`;
+});
+
 
 
 enableValidation(validationConfig);

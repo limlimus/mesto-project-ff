@@ -6,9 +6,11 @@ function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTempl
   const cardName = cardElement.querySelector('.card__title');
   const deleteBtn = cardElement.querySelector('.card__delete-button');
   const likeBtn = cardElement.querySelector('.card__like-button');
+  const likeCount =cardElement.querySelector('.card__like_counter');
   cardImg.src = card.link;
   cardImg.alt = card.name;
   cardName.textContent = card.name;
+  likeCount.textContent = card.likes.length;
 
   cardImg.addEventListener('click', function () {
     clickCard(popupImage, card)
