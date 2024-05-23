@@ -1,10 +1,9 @@
 import './vendor/fonts.css';
 import './pages/index.css';
-import { initialCards } from './components/cards.js';
 import { createCard, deleteCard, likeCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { getCurrentProfile, getCurrentCards, editProfile, postNewCard } from './components/api.js';
+import { getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard } from './components/api.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -24,6 +23,8 @@ const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
+const deleteForm = document.forms['delete-card'];
+
 //объект с настройками валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -100,17 +101,23 @@ placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(car
   const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
   cardContainer.prepend(cardElement);
 }));
+// слушатель на кнопку удаления карты
+
+
 
 Promise.all([getCurrentProfile(), getCurrentCards()]).then((results) => {
   const profile = results[0];
   const cardList = results[1];
+
   cardList.forEach((function (card) {
-    const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate, card.likes);
+    const canDelete = profile._id === card.owner._id;
+    const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate, canDelete);
     cardContainer.append(cardElement);
    }));
    profileName.textContent = profile.name;
   profileJob.textContent = profile.about;
-  profileAvatar.style= `background-image: url('${profile.avatar}')`;
+  profileAvatar.style = `background-image: url('${profile.avatar}')`;
+
 });
 
 

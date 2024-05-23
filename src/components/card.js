@@ -1,5 +1,5 @@
 // функция создания карты
-function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTemplate) {
+function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTemplate, canDelete) {
   const clone = cardTemplate.cloneNode(true);
   const cardElement = clone.querySelector('.card');
   const cardImg = cardElement.querySelector('.card__image');
@@ -21,16 +21,21 @@ function createCard(card, deleteCard, likeCard, clickCard, popupImage, cardTempl
   });
 
   deleteBtn.addEventListener('click', function () {
-    deleteCard(cardElement);
+    deleteCard(cardElement, card);
   });
+
+  if (!canDelete) {
+    deleteBtn.classList.add('card__delete-button_hidden');
+  }
 
   return cardElement;
 }
 
 // функция удаления карты
-function deleteCard(cardElement) {
-  cardElement.remove();
-}
+//function deleteCard(cardElement) {
+  //cardElement.remove();
+ // deleteMyCard(cardElement._id);
+//}
 
 // функция лайка карты
 function likeCard(btn) {
