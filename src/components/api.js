@@ -137,5 +137,27 @@ const deleteLike = (cardId) => {
   });
 };
 
+//PATCH https://nomoreparties.co/v1/cohortId/users/me/avatar
+const updateAvatar = (avatar) => {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      authorization: `${config.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      avatar
+    }),
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error ${res.status}`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
 
-export { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard, saveLike, deleteLike };
+export { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard, saveLike, deleteLike, updateAvatar };
