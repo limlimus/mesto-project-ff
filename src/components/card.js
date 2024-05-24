@@ -1,4 +1,4 @@
-import { saveLike, deleteLike, deleteMyCard } from "./api";
+import { saveLike, deleteLike } from "./api";
 
 // функция создания карты
 function createCard(card, likeCard, clickCard, clickDeleteCard, popupImage, cardTemplate, canDelete, isLiked) {
@@ -9,6 +9,7 @@ function createCard(card, likeCard, clickCard, clickDeleteCard, popupImage, card
   const deleteBtn = cardElement.querySelector('.card__delete-button');
   const likeBtn = cardElement.querySelector('.card__like-button');
   const likeCount =cardElement.querySelector('.card__like_counter');
+  cardElement.id = `card-${card._id}`;
   cardImg.src = card.link;
   cardImg.alt = card.name;
   cardName.textContent = card.name;
@@ -23,12 +24,12 @@ function createCard(card, likeCard, clickCard, clickDeleteCard, popupImage, card
 
   });
 
-  // deleteBtn.addEventListener('click', function () {
-  //   openPopupDelete(cardElement, card);
-  // });
   deleteBtn.addEventListener('click', function () {
     clickDeleteCard(cardElement, card);
   });
+  //deleteBtn.addEventListener('click', function () {
+   // clickDeleteCard(cardElement, card);
+  //});
 
   if (!canDelete) {
     deleteBtn.classList.add('card__delete-button_hidden');
@@ -39,13 +40,8 @@ function createCard(card, likeCard, clickCard, clickDeleteCard, popupImage, card
   };
 
   return cardElement;
-}
+};
 
-// функция удаления карты
-function deleteCard(cardElement, card) {
-  deleteMyCard(card._id);
-  cardElement.remove();
-}
 
 // функция лайка карты
 function likeCard(btn, card, cardElement) {
@@ -61,4 +57,4 @@ function likeCard(btn, card, cardElement) {
   };
  };
 
-export { createCard, likeCard, deleteCard };
+export { createCard, likeCard };

@@ -1,9 +1,9 @@
 import './vendor/fonts.css';
 import './pages/index.css';
-import { createCard, likeCard, deleteCard } from './components/card.js';
+import { createCard, likeCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, updateAvatar } from './components/api.js';
+import { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, updateAvatar, deleteMyCard } from './components/api.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -24,7 +24,9 @@ const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
 const popupDelete = document.querySelector('.popup_type_delete-card');
-const deleteCardBtn = popupDelete.querySelector('.popup__button');
+const formDelete = document.forms['delete-card'];
+const inputDelete = document.querySelector('#delete-card');
+//const deleteCardBtn = popupDelete.querySelector('.popup__button');
 const popupNewAvatar = document.querySelector('.popup_type_new_avatar');
 const formNewAavtarLink = document.forms['new-avatar'];
 const inputNewAvatar = document.querySelector('.popup__input_type_avatar-link');
@@ -57,9 +59,7 @@ function handleOpenDelete(popupDelete,card) {
   handleOpenPopup(popupDelete)
 }
 
-deleteCardBtn.addEventListener('click', () => {
-  deleteCard(cardElement, card);
-});
+
 
 // функция заполнения формы профиля
 function handleProfileSubmit(evt) {
@@ -136,14 +136,25 @@ popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt));
 
 // слушатель на кнопку создания новой нарты
 placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(card) {
-  const cardElement = createCard(card, likeCard, handleOpenPopupImage, deleteCard, popupImage, cardTemplate, true, false);
+  const cardElement = createCard(card, likeCard, handleOpenPopupImage, openDeletePopup, popupImage, cardTemplate, true, false);
   cardContainer.prepend(cardElement);
 }));
 
+function openDeletePopup(cardElement, card) {
+  handleOpenPopup(popupDelete);
+  inputDelete.value = card._id;
+
+};
 // слушатель на кнопку удаления карты
-popupDelete.addEventListener('submit', () => deleteCard(cardElement,card))
-
-
+formDelete.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const id = inputDelete.value;
+  deleteMyCard(id)
+  .then(()=>{
+    handleClosePopup(popupDelete);
+    document.querySelector(`#card-${id}`).remove();
+  });
+});
 
 //использование данных, полученных из запросов
 Promise.all([getCurrentProfile(), getCurrentCards()]).then((results) => {
@@ -155,7 +166,7 @@ Promise.all([getCurrentProfile(), getCurrentCards()]).then((results) => {
     const isLiked = card.likes.some((person) => {
       return person._id === profile._id;
     });
-    const cardElement = createCard(card, likeCard, handleOpenPopupImage, deleteCard, popupImage, cardTemplate, canDelete, isLiked);
+    const cardElement = createCard(card, likeCard, handleOpenPopupImage, openDeletePopup, popupImage, cardTemplate, canDelete, isLiked);
   cardContainer.append(cardElement);
   });
 
