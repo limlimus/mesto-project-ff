@@ -1,9 +1,9 @@
 import './vendor/fonts.css';
 import './pages/index.css';
-import { createCard, deleteCard, likeCard } from './components/card.js';
+import { createCard, likeCard, deleteCard } from './components/card.js';
 import { handleOpenPopup, handleClosePopup, handleClosePopupOnOverlay } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard } from './components/api.js';
+import { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard } from './components/api.js';
 
 const cardContainer = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template').content;
@@ -23,7 +23,8 @@ const addCardBtn = document.querySelector('.profile__add-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
-const deleteForm = document.forms['delete-card'];
+const popupDelete = document.querySelector('.popup_type_delete-card');
+const deleteCardBtn = popupDelete.querySelector('.popup__button');
 
 //объект с настройками валидации
 const validationConfig = {
@@ -35,6 +36,10 @@ const validationConfig = {
   errorClass: 'popup__error_visible'
 };
 
+setConfig({
+  token: 'beb4447c-03b3-4004-a487-88a53c0f8269',
+  groupId: 'wff-cohort-13'
+});
 
 // функция открытия попапа с картинкой
 function handleOpenPopupImage(popupImage, card) {
@@ -44,6 +49,14 @@ function handleOpenPopupImage(popupImage, card) {
   popupImg.src = card.link;
   popupImgCaption.textContent = card.name;
 };
+
+function handleOpenDelete(popupDelete,card) {
+  handleOpenPopup(popupDelete)
+}
+
+deleteCardBtn.addEventListener('click', () => {
+  deleteCard(cardElement, card);
+});
 
 // функция заполнения формы профиля
 function handleProfileSubmit(evt) {
@@ -97,31 +110,35 @@ popupProfile.addEventListener('submit', (evt) => handleProfileSubmit(evt));
 
 // слушатель на кнопку создания новой нарты
 placeForm.addEventListener('submit', (evt) => handleCardSubmit(evt, function(card) {
-  console.log(card);
-  const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage,popupImage, cardTemplate);
+  const cardElement = createCard(card, likeCard, handleOpenPopupImage, deleteCard, popupImage, cardTemplate, true, false);
   cardContainer.prepend(cardElement);
 }));
+
 // слушатель на кнопку удаления карты
+popupDelete.addEventListener('submit', () => deleteCard(cardElement,card))
 
 
 
+//использование данных, полученных из запросов
 Promise.all([getCurrentProfile(), getCurrentCards()]).then((results) => {
   const profile = results[0];
   const cardList = results[1];
 
-  cardList.forEach((function (card) {
-    const canDelete = profile._id === card.owner._id;
-    const cardElement = createCard(card, deleteCard, likeCard, handleOpenPopupImage, popupImage, cardTemplate, canDelete);
-    cardContainer.append(cardElement);
-   }));
-   profileName.textContent = profile.name;
+  cardList.forEach(function (card) {
+    const canDelete = (profile._id === card.owner._id);
+    const isLiked = card.likes.some((person) => {
+      return person._id === profile._id;
+    });
+    const cardElement = createCard(card, likeCard, handleOpenPopupImage, deleteCard, popupImage, cardTemplate, canDelete, isLiked);
+  cardContainer.append(cardElement);
+  });
+
+  profileName.textContent = profile.name;
   profileJob.textContent = profile.about;
   profileAvatar.style = `background-image: url('${profile.avatar}')`;
-
 });
 
-
-
+// включение валидации форм
 enableValidation(validationConfig);
 
 

@@ -1,42 +1,44 @@
 //ф-и взаимодействия с сервером
+let config;
+const setConfig = (conf) => {config = conf};
 const getCurrentProfile = () => {
-  return fetch("https://nomoreparties.co/v1/wff-cohort-13/users/me", {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me`, {
     headers: {
-      authorization: "beb4447c-03b3-4004-a487-88a53c0f8269",
+      authorization: `${config.token}`,
     },
   })
     .then((res) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error`);
+      return Promise.reject(`Error ${res.status}`);
     })
     .catch((err) => {
-      console.log(`Error: ${err}`);
+      console.log(err);
     });
 };
 
 const getCurrentCards = () => {
-  return fetch("https://nomoreparties.co/v1/wff-cohort-13/cards", {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards`, {
     headers: {
-      authorization: "beb4447c-03b3-4004-a487-88a53c0f8269",
+      authorization: `${config.token}`,
     },
   })
     .then((res) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error`);
+      return Promise.reject(`Error ${res.status}`);
     })
     .catch((err) => {
-      console.log(`Error: ${err}`);
+      console.log(err);
     });
 };
 const editProfile = (name, about) => {
-  return fetch("https://nomoreparties.co/v1/wff-cohort-13/users/me", {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me`, {
     method: "PATCH",
     headers: {
-      authorization: "beb4447c-03b3-4004-a487-88a53c0f8269",
+      authorization: `${config.token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -48,18 +50,18 @@ const editProfile = (name, about) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error`);
+      return Promise.reject(`Error ${res.status}`);
     })
     .catch((err) => {
-      console.log(`Error: ${err}`);
+      console.log(err);
     });
 };
 
 const postNewCard = (name, link) => {
-  return fetch("https://nomoreparties.co/v1/wff-cohort-13/cards", {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards`, {
     method: "POST",
     headers: {
-      authorization: "beb4447c-03b3-4004-a487-88a53c0f8269",
+      authorization: `${config.token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -71,18 +73,18 @@ const postNewCard = (name, link) => {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Error`);
+      return Promise.reject(`Error ${res.status}`);
     })
     .catch((err) => {
-      console.log(`Error: ${err}`);
+      console.log(err);
     });
 };
 
 const deleteMyCard = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/cohortId/cards/${cardId}`, {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/${cardId}`, {
     method: 'DELETE',
     headers: {
-      authorization: "beb4447c-03b3-4004-a487-88a53c0f8269",
+      authorization: `${config.token}`,
       "Content-Type": "application/json",
     },
   })
@@ -93,8 +95,47 @@ const deleteMyCard = (cardId) => {
     return Promise.reject(`Error`);
   })
   .catch((err) => {
-    console.log(`Error: ${err}`);
+    console.log(err);
   });
 };
 
-export { getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard };
+const saveLike = (cardId) => {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: {
+      authorization: `${config.token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error ${res.status}`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
+
+const deleteLike = (cardId) => {
+  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `${config.token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error ${res.status}`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
+
+
+export { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard, saveLike, deleteLike };
