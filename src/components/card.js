@@ -33,7 +33,7 @@ function createCard(
   });
 
   deleteBtn.addEventListener('click', function () {
-    clickDeleteCard(cardElement, card);
+    clickDeleteCard(card);
   });
 
   if (!canDelete) {

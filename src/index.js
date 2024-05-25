@@ -50,7 +50,7 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
 };
-
+// настройки API
 setConfig({
   token: 'beb4447c-03b3-4004-a487-88a53c0f8269',
   groupId: 'wff-cohort-13',
@@ -84,7 +84,7 @@ function handleProfileSubmit(evt) {
   });
 }
 
-//функция заполнения формы новой карты
+// функция заполнения формы новой карты
 function handleCardSubmit(evt, cb) {
   evt.preventDefault();
   const submitText = evt.submitter.textContent;
@@ -130,7 +130,7 @@ popupBtnCloseList.forEach(function (btn) {
   });
 });
 
-//слушатель на кнопку редактирования автара
+// слушатель на кнопку редактирования автара
 formNewAavtarLink.addEventListener('submit', function (evt) {
   evt.preventDefault();
   const submitText = evt.submitter.textContent;
@@ -165,12 +165,17 @@ placeForm.addEventListener('submit', (evt) =>
 // слушатель на кнопку удаления карты
 formDelete.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  deleteCard();
+});
+
+// функция удаления карты
+function deleteCard() {
   const id = inputDelete.value;
   deleteMyCard(id).then(() => {
     handleClosePopup(popupDelete);
     document.querySelector(`#card-${id}`).remove();
   });
-});
+};
 
 //использование данных, полученных из запросов
 Promise.all([getCurrentProfile(), getInitialCards()]).then((results) => {
