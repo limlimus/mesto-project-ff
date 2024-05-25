@@ -53,55 +53,64 @@ const validationConfig = {
   errorClass: 'popup__error_visible',
 };
 
-
 // функция открытия попапа с картинкой
 function handleOpenPopupImage(popupImage, card) {
   handleOpenPopup(popupImage);
   popupImg.src = card.link;
   popupImg.alt = card.name;
   popupImgCaption.textContent = card.name;
-};
+}
 
 // функция открытия попапа удаления карты
 function openDeletePopup(card) {
   handleOpenPopup(popupDelete);
   inputDelete.value = card._id;
-};
+}
 
 // функция заполнения формы профиля
 function handleProfileSubmit(evt) {
   function makeRequest() {
-    return editProfile(nameInput.value, jobInput.value).then((profile) => {
-      profileName.textContent = profile.name;
-      profileJob.textContent = profile.about;
-    })
-    .finally(() => {
-      handleClosePopup(popupEdit);
-    });
+    return editProfile(nameInput.value, jobInput.value)
+      .then((profile) => {
+        profileName.textContent = profile.name;
+        profileJob.textContent = profile.about;
+      })
+      .finally(() => {
+        handleClosePopup(popupEdit);
+      });
   }
   handleSubmit(makeRequest, evt);
-};
+}
 
 // функция заполнения формы новой карты
 function handleCardSubmit(evt, cb) {
-  evt.preventDefault();
-  const submitText = evt.submitter.textContent;
-  submitButton.textContent = 'Сохранение...';
-  postNewCard(inputPlace.value, inputLink.value).then((newCard) => {
-    cb(newCard);
-    submitButton.textContent = submitText;
-    handleClosePopup(popupNewCard);
-  });
-};
+  function makeRequest() {
+    return postNewCard(inputPlace.value, inputLink.value)
+      .then((newCard) => {
+        cb(newCard);
+      })
+      .finally(() => {
+        handleClosePopup(popupNewCard);
+      });
+  }
+  handleSubmit(makeRequest, evt);
+}
 
 // функция удаления карты
-function deleteCard() {
-  const id = inputDelete.value;
-  return deleteMyCard(id).then(() => {
-    handleClosePopup(popupDelete);
-    document.querySelector(`#card-${id}`).remove();
-  });
-};
+function handleCardDeleteSubmit(evt) {
+  function makeRequest() {
+    const id = inputDelete.value;
+    return deleteMyCard(id)
+      .then(() => {
+        handleClosePopup(popupDelete);
+        document.querySelector(`#card-${id}`).remove();
+      })
+      .finally(() => {
+        handleClosePopup(popupDelete);
+      });
+  }
+  handleSubmit(makeRequest, evt, 'Удаление...');
+}
 
 // слушатель на кнопку, открывающую попап popupEdit
 profileEditBtn.addEventListener('click', function () {
@@ -161,48 +170,43 @@ placeForm.addEventListener('submit', (evt) =>
       popupImage,
       cardTemplate,
       canDelete: true,
-      isLiked: false};
+      isLiked: false,
+    };
     const cardElement = createCard(cardConfig);
     cardContainer.prepend(cardElement);
   })
 );
 
 // слушатель на кнопку удаления карты
-formDelete.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const submitText = evt.submitter.textContent;
-  evt.submitter.textContent = 'Удаление...';
-  deleteCard().finally(() => {
-    evt.submitter.textContent = submitText;
-  });
-});
+formDelete.addEventListener('submit', handleCardDeleteSubmit);
 
 //использование данных, полученных из запросов
 Promise.all([getCurrentProfile(), getInitialCards()])
-.then(([userData, cardList]) => {
-  cardList.forEach(function (card) {
-    const canDelete = userData._id === card.owner._id;
-    const isLiked = card.likes.some((person) => {
-      return person._id === userData._id;
+  .then(([userData, cardList]) => {
+    cardList.forEach(function (card) {
+      const canDelete = userData._id === card.owner._id;
+      const isLiked = card.likes.some((person) => {
+        return person._id === userData._id;
+      });
+      const cardConfig = {
+        card,
+        likeCard,
+        clickCard: handleOpenPopupImage,
+        clickDeleteCard: openDeletePopup,
+        popupImage,
+        cardTemplate,
+        canDelete,
+        isLiked,
+      };
+      const cardElement = createCard(cardConfig);
+      cardContainer.append(cardElement);
     });
-    const cardConfig = {
-      card,
-      likeCard,
-      clickCard: handleOpenPopupImage,
-      clickDeleteCard: openDeletePopup,
-      popupImage,
-      cardTemplate,
-      canDelete,
-      isLiked};
-    const cardElement = createCard(cardConfig);
-    cardContainer.append(cardElement);
-    })
 
-  profileName.textContent = userData.name;
-  profileJob.textContent = userData.about;
-  profileAvatar.style = `background-image: url('${userData.avatar}')`;
-})
-.catch(err => console.log(err));
+    profileName.textContent = userData.name;
+    profileJob.textContent = userData.about;
+    profileAvatar.style = `background-image: url('${userData.avatar}')`;
+  })
+  .catch((err) => console.log(err));
 
 // включение валидации форм
 enableValidation(validationConfig);

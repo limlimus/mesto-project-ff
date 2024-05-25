@@ -16,19 +16,19 @@ function createCard(cardConfig) {
   likeCount.textContent = cardConfig.card.likes.length;
 
   cardImg.addEventListener('click', function () {
-    clickCard(cardConfig.popupImage, cardConfig.card);
+    cardConfig.clickCard(cardConfig.popupImage, cardConfig.card);
   });
 
   likeBtn.addEventListener('click', function () {
-    likeCard(
-      cardConfig.likeBtn,
+    cardConfig.likeCard(
+      likeBtn,
       cardConfig.card,
       likeCount
     );
   });
 
   deleteBtn.addEventListener('click', function () {
-    clickDeleteCard(cardConfig.card);
+    cardConfig.clickDeleteCard(cardConfig.card);
   });
 
   if (!cardConfig.canDelete) {
@@ -45,14 +45,17 @@ function createCard(cardConfig) {
 // функция лайка карты
 function likeCard(btn, card, likeCount) {
   if (btn.classList.contains('card__like-button_is-active')) {
+    deleteLike(card._id).then((res) => {
+      likeCount.textContent = res.likes.length;
+      btn.classList.remove('card__like-button_is-active');
+    })
+    .catch((err) => console.log(err));
+  } else {
     saveLike(card._id).then((res) => {
       likeCount.textContent = res.likes.length;
-      btn.classList.toggle('card__like-button_is-active');
-    });
-  } else {
-    deleteLike(card._id).then((res) => {
-      likeCount = res.likes.length;
-    });
+      btn.classList.add('card__like-button_is-active');
+    })
+    .catch((err) => console.log(err));
   }
 }
 
