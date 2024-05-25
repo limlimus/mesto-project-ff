@@ -165,17 +165,21 @@ placeForm.addEventListener('submit', (evt) =>
 // слушатель на кнопку удаления карты
 formDelete.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  deleteCard();
+  const submitText = evt.submitter.textContent;
+  evt.submitter.textContent = 'Удаление...';
+  deleteCard().then(() => {
+    evt.submitter.textContent = submitText;
+  });
 });
 
 // функция удаления карты
 function deleteCard() {
   const id = inputDelete.value;
-  deleteMyCard(id).then(() => {
+  return deleteMyCard(id).then(() => {
     handleClosePopup(popupDelete);
     document.querySelector(`#card-${id}`).remove();
   });
-};
+}
 
 //использование данных, полученных из запросов
 Promise.all([getCurrentProfile(), getInitialCards()]).then((results) => {
