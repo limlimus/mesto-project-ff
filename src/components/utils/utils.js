@@ -24,4 +24,9 @@ function handleSubmit(request, evt, loadingText = "Сохранение...") {
       renderLoading(false, submitButton, initialText);
     });
 }
-export { handleSubmit };
+
+function handleServerError(err) {
+  console.log('Ошибка:',err);
+}
+
+export { handleSubmit, handleServerError };

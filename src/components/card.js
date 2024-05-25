@@ -1,5 +1,5 @@
 import { saveLike, deleteLike } from './api';
-
+import { handleServerError } from './utils/utils.js';
 // функция создания карты
 function createCard(cardConfig) {
   const clone = cardConfig.cardTemplate.cloneNode(true);
@@ -49,13 +49,13 @@ function likeCard(btn, card, likeCount) {
       likeCount.textContent = res.likes.length;
       btn.classList.remove('card__like-button_is-active');
     })
-    .catch((err) => console.log(err));
+    .catch(handleServerError);
   } else {
     saveLike(card._id).then((res) => {
       likeCount.textContent = res.likes.length;
       btn.classList.add('card__like-button_is-active');
     })
-    .catch((err) => console.log(err));
+    .catch(handleServerError);
   }
 }
 
