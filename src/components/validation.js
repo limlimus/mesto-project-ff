@@ -50,18 +50,22 @@ const enableValidation = (validationConfig) => {
   });
 };
 
-//функция проверки валидации формы
+// функция проверки валидации формы
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   });
 };
 
+const disableButton = (buttonElement, validationConfig) => {
+  buttonElement.disabled = true;
+  buttonElement.classList.add(validationConfig.inactiveButtonClass);
+}
+
 // функция блокировки кнопки формы
 const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   if (hasInvalidInput(inputList)) {
-    buttonElement.disabled = true;
-    buttonElement.classList.add(validationConfig.inactiveButtonClass);
+    disableButton(buttonElement, validationConfig)
   } else {
     buttonElement.disabled = false;
     buttonElement.classList.remove(validationConfig.inactiveButtonClass);
@@ -77,6 +81,9 @@ const setEventListeners = (formElement, validationConfig) => {
     validationConfig.submitButtonSelector
   );
   toggleButtonState(inputList, buttonElement, validationConfig);
+  formElement.addEventListener('reset', () => {
+    disableButton(buttonElement, validationConfig)
+  });
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement, validationConfig);
@@ -91,6 +98,10 @@ const clearValidation = (formElement, validationConfig) => {
     formElement.querySelectorAll(validationConfig.inputSelector)
   );
   formElement.reset();
+  const buttonElement = formElement.querySelector(
+    validationConfig.submitButtonSelector
+  );
+  toggleButtonState(inputList, buttonElement, validationConfig)
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
   });

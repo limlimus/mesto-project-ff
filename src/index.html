@@ -50,6 +50,7 @@
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form" name="edit-profile">
+            <div class="popup__input_wrapper">
             <input
               type="text"
               name="name"
@@ -62,7 +63,8 @@
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input_error name-error"></span>
+            <span class="popup__input_error name-error"></span></div>
+            <div class="popup__input_wrapper">
             <input
               type="text"
               name="description"
@@ -75,7 +77,7 @@
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input_error description-error"></span>
+            <span class="popup__input_error description-error"></span></div>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -88,6 +90,7 @@
           <button type="button" class="popup__close"></button>
           <h3 class="popup__title">Новое место</h3>
           <form class="popup__form" name="new-place">
+            <div class="popup__input_wrapper">
             <input
               type="text"
               name="place-name"
@@ -100,7 +103,8 @@
               data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
-            <span class="popup__input_error place-name-error"></span>
+            <span class="popup__input_error place-name-error"></span></div>
+            <div class="popup__input_wrapper">
             <input
               type="url"
               name="link"
@@ -109,7 +113,7 @@
               placeholder="Ссылка на картинку"
               required
             />
-            <span class="popup__input_error link-error"></span>
+            <span class="popup__input_error link-error"></span></div>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -142,6 +146,7 @@
         <button type="button" class="popup__close"></button>
         <h3 class="popup__title">Обновить автар</h3>
         <form class="popup__form" name="new-avatar">
+          <div class="popup__input_wrapper">
           <input
             type="url"
             name="avatar-link"
@@ -150,7 +155,7 @@
             placeholder="Ссылка на картинку"
             required
           />
-          <span class="popup__input_error avatar-link-error"></span>
+          <span class="popup__input_error avatar-link-error"></span></div>
           <button type="submit" class="button popup__button">Сохранить</button>
         </form>
       </div>
