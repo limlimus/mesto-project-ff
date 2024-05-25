@@ -1,6 +1,8 @@
-//ф-и взаимодействия с сервером
 let config;
-const setConfig = (conf) => {config = conf};
+const setConfig = (conf) => {
+  config = conf;
+};
+//функции взаимодействия с сервером
 const getCurrentProfile = () => {
   return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me`, {
     headers: {
@@ -18,7 +20,7 @@ const getCurrentProfile = () => {
     });
 };
 
-const getCurrentCards = () => {
+const getInitialCards = () => {
   return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards`, {
     headers: {
       authorization: `${config.token}`,
@@ -36,10 +38,10 @@ const getCurrentCards = () => {
 };
 const editProfile = (name, about) => {
   return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
       authorization: `${config.token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       name,
@@ -59,10 +61,10 @@ const editProfile = (name, about) => {
 
 const postNewCard = (name, link) => {
   return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards`, {
-    method: "POST",
+    method: 'POST',
     headers: {
       authorization: `${config.token}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       name,
@@ -81,83 +83,104 @@ const postNewCard = (name, link) => {
 };
 
 const deleteMyCard = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: {
-      authorization: `${config.token}`,
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  return fetch(
+    `https://nomoreparties.co/v1/${config.groupId}/cards/${cardId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        authorization: `${config.token}`,
+        'Content-Type': 'application/json',
+      },
     }
-    return Promise.reject(`Error`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const saveLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: {
-      authorization: `${config.token}`,
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  return fetch(
+    `https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`,
+    {
+      method: 'PUT',
+      headers: {
+        authorization: `${config.token}`,
+        'Content-Type': 'application/json',
+      },
     }
-    return Promise.reject(`Error ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error ${res.status}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const deleteLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: {
-      authorization: `${config.token}`,
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  return fetch(
+    `https://nomoreparties.co/v1/${config.groupId}/cards/likes/${cardId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        authorization: `${config.token}`,
+        'Content-Type': 'application/json',
+      },
     }
-    return Promise.reject(`Error ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error ${res.status}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-//PATCH https://nomoreparties.co/v1/cohortId/users/me/avatar
 const updateAvatar = (avatar) => {
-  return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: {
-      authorization: `${config.token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      avatar
-    }),
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+  return fetch(
+    `https://nomoreparties.co/v1/${config.groupId}/users/me/avatar`,
+    {
+      method: 'PATCH',
+      headers: {
+        authorization: `${config.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        avatar,
+      }),
     }
-    return Promise.reject(`Error ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-}
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error ${res.status}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-export { setConfig, getCurrentProfile, getCurrentCards, editProfile, postNewCard, deleteMyCard, saveLike, deleteLike, updateAvatar };
+export {
+  setConfig,
+  getCurrentProfile,
+  getInitialCards,
+  editProfile,
+  postNewCard,
+  deleteMyCard,
+  saveLike,
+  deleteLike,
+  updateAvatar,
+};

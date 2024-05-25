@@ -1,6 +1,6 @@
 //функции для валидации форм
 
-//ф-я показывает сообщени ошибки
+//функция показывает сообщени ошибки
 const showInputError = (
   formElement,
   inputElement,
@@ -13,20 +13,20 @@ const showInputError = (
   errorElement.classList.add(validationConfig.errorClass);
 };
 
-//ф-я скрывает сообщение ошибки
+//функция скрывает сообщение ошибки
 const hideInputError = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
-  errorElement.textContent = "";
+  errorElement.textContent = '';
 };
 
-//ф-я проверяет на валидность
+//функция проверяет на валидность
 const isValid = (formElement, inputElement, validationConfig) => {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
-    inputElement.setCustomValidity("");
+    inputElement.setCustomValidity('');
   }
   if (!inputElement.validity.valid) {
     showInputError(
@@ -40,7 +40,7 @@ const isValid = (formElement, inputElement, validationConfig) => {
   }
 };
 
-// ф-я, перебирает все формы
+// функция перебирает все формы
 const enableValidation = (validationConfig) => {
   const formList = Array.from(
     document.querySelectorAll(validationConfig.formSelector)
@@ -50,14 +50,14 @@ const enableValidation = (validationConfig) => {
   });
 };
 
-//ф-я проверки валидации формы
+//функция проверки валидации формы
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   });
 };
 
-// ф-я блокировки кнопки формы
+// функция блокировки кнопки формы
 const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.disabled = true;
@@ -68,7 +68,7 @@ const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   }
 };
 
-//ф-я вешает листнеры на инпуты
+//функция вешает листнеры на инпуты
 const setEventListeners = (formElement, validationConfig) => {
   const inputList = Array.from(
     formElement.querySelectorAll(validationConfig.inputSelector)
@@ -78,16 +78,18 @@ const setEventListeners = (formElement, validationConfig) => {
   );
   toggleButtonState(inputList, buttonElement, validationConfig);
   inputList.forEach((inputElement) => {
-    inputElement.addEventListener("input", () => {
+    inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement, validationConfig);
       toggleButtonState(inputList, buttonElement, validationConfig);
     });
   });
 };
 
-// ф-я очистки ошибок валидации
+// функция очистки ошибок валидации
 const clearValidation = (formElement, validationConfig) => {
-  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  const inputList = Array.from(
+    formElement.querySelectorAll(validationConfig.inputSelector)
+  );
   formElement.reset();
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
