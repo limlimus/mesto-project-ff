@@ -13,15 +13,15 @@ function handleClosePopup(popup) {
 // функция закрытия по кнопке ESC
 function handleClosePopupOnEsc(event) {
   if (event.key === 'Escape') {
-    handleClosePopup();
+  const popup = document.querySelector('.popup_is-opened');
+    handleClosePopup(popup);
   }
 }
 
 // функция закрытия попапа кликом по оверлею
 function handleClosePopupOnOverlay(event) {
-  const popup = document.querySelector('.popup_is-opened');
-  if (event.target === popup) {
-    handleClosePopup(popup);
+  if (event.target === event.currentTarget) {
+    handleClosePopup(event.currentTarget);
   }
 }
 

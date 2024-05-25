@@ -2,6 +2,16 @@ let config;
 const setConfig = (conf) => {
   config = conf;
 };
+
+const checkResponse = (res) => {
+  if (res.ok) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error ${res.status}`);
+  }
+  };
+
 //функции взаимодействия с сервером
 const getCurrentProfile = () => {
   return fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me`, {
@@ -9,12 +19,7 @@ const getCurrentProfile = () => {
       authorization: `${config.token}`,
     },
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Error ${res.status}`);
-    })
+    .then((res) => checkResponse(res))
     .catch((err) => {
       console.log(err);
     });
@@ -184,3 +189,5 @@ export {
   deleteLike,
   updateAvatar,
 };
+
+

@@ -9,7 +9,8 @@ function createCard(
   popupImage,
   cardTemplate,
   canDelete,
-  isLiked
+  isLiked,
+  likeCount
 ) {
   const clone = cardTemplate.cloneNode(true);
   const cardElement = clone.querySelector('.card');
@@ -29,7 +30,7 @@ function createCard(
   });
 
   likeBtn.addEventListener('click', function () {
-    likeCard(likeBtn, card, cardElement);
+    likeCard(likeBtn, card, cardElement, likeCount);
   });
 
   deleteBtn.addEventListener('click', function () {
@@ -48,12 +49,13 @@ function createCard(
 }
 
 // функция лайка карты
-function likeCard(btn, card, cardElement) {
-  btn.classList.toggle('card__like-button_is-active');
+function likeCard(btn, card, cardElement, likeCount) {
+
   if (btn.classList.contains('card__like-button_is-active')) {
     saveLike(card._id).then((res) => {
-      cardElement.querySelector('.card__like_counter').textContent =
+      likeCount.textContent =
         res.likes.length;
+        btn.classList.toggle('card__like-button_is-active');
     });
   } else {
     deleteLike(card._id).then((res) => {
@@ -64,3 +66,4 @@ function likeCard(btn, card, cardElement) {
 }
 
 export { createCard, likeCard };
+
