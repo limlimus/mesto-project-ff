@@ -26,15 +26,13 @@
   background-position: center;
   z-index: 10;
   opacity: 0;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .profile__image:hover .profile__image_overlay {
   opacity: 1;
   cursor: pointer;
 }
-/* max-width: 26px;
-  max-height: 26px; */
 
 @media screen and (max-width: 740px) {
   .profile__image {

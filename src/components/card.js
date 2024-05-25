@@ -45,7 +45,7 @@ function createCard(
   }
 
   return cardElement;
-};
+}
 
 // функция лайка карты
 function likeCard(btn, card, cardElement) {
@@ -61,6 +61,6 @@ function likeCard(btn, card, cardElement) {
         res.likes.length;
     });
   }
-};
+}
 
 export { createCard, likeCard };
