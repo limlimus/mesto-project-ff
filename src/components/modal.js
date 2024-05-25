@@ -13,7 +13,7 @@ function handleClosePopup(popup) {
 // функция закрытия по кнопке ESC
 function handleClosePopupOnEsc(event) {
   if (event.key === 'Escape') {
-  const popup = document.querySelector('.popup_is-opened');
+    const popup = document.querySelector('.popup_is-opened');
     handleClosePopup(popup);
   }
 }

@@ -96,9 +96,10 @@ function handleCardSubmit(evt, cb) {
 function handleEditProfile(evt) {
   function makeRequest() {
     return updateAvatar(inputNewAvatar.value)
-    .then((res) => {
-      handleClosePopup(popupNewAvatar);
-      profileAvatar.style = `background-image: url('${res.avatar}')`})
+      .then((res) => {
+        handleClosePopup(popupNewAvatar);
+        profileAvatar.style = `background-image: url('${res.avatar}')`;
+      })
       .catch(handleServerError)
       .finally(() => {
         handleClosePopup(popupNewAvatar);
@@ -106,7 +107,6 @@ function handleEditProfile(evt) {
   }
   handleSubmit(makeRequest, evt);
 }
-
 
 // функция удаления карты
 function handleCardDeleteSubmit(evt) {

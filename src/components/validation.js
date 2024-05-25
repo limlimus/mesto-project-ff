@@ -60,12 +60,12 @@ const hasInvalidInput = (inputList) => {
 const disableButton = (buttonElement, validationConfig) => {
   buttonElement.disabled = true;
   buttonElement.classList.add(validationConfig.inactiveButtonClass);
-}
+};
 
 // функция блокировки кнопки формы
 const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   if (hasInvalidInput(inputList)) {
-    disableButton(buttonElement, validationConfig)
+    disableButton(buttonElement, validationConfig);
   } else {
     buttonElement.disabled = false;
     buttonElement.classList.remove(validationConfig.inactiveButtonClass);
@@ -82,7 +82,7 @@ const setEventListeners = (formElement, validationConfig) => {
   );
   toggleButtonState(inputList, buttonElement, validationConfig);
   formElement.addEventListener('reset', () => {
-    disableButton(buttonElement, validationConfig)
+    disableButton(buttonElement, validationConfig);
   });
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
@@ -101,7 +101,7 @@ const clearValidation = (formElement, validationConfig) => {
   const buttonElement = formElement.querySelector(
     validationConfig.submitButtonSelector
   );
-  toggleButtonState(inputList, buttonElement, validationConfig)
+  toggleButtonState(inputList, buttonElement, validationConfig);
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
   });
