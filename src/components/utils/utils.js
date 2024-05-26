@@ -13,7 +13,7 @@ function renderLoading(
 }
 
 // универсальная функция обработки сабмита
-function handleSubmit(request, evt, loadingText = 'Сохранение...', withReset) {
+function handleSubmit(request, evt, loadingText = 'Сохранение...', withReset=true) {
   evt.preventDefault();
 
   const submitButton = evt.submitter;

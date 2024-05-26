@@ -71,7 +71,7 @@ function handleProfileSubmit(evt) {
         handleClosePopup(popupEdit);
       });
   }
-  handleSubmit(makeRequest, evt, true);
+  handleSubmit(makeRequest, evt);
 }
 
 // функция заполнения формы новой карты
@@ -83,7 +83,7 @@ function handleCardSubmit(evt, cb) {
         handleClosePopup(popupNewCard);
       });
   }
-  handleSubmit(makeRequest, evt, true);
+  handleSubmit(makeRequest, evt);
 }
 
 // функция редактирования аватара
@@ -95,7 +95,7 @@ function handleEditProfile(evt) {
         profileAvatar.style = `background-image: url('${res.avatar}')`;
       });
   }
-  handleSubmit(makeRequest, evt, true);
+  handleSubmit(makeRequest, evt);
 }
 
 // функция удаления карты
@@ -106,7 +106,6 @@ function handleCardDeleteSubmit(evt) {
       .then(() => {
         handleClosePopup(popupDelete);
         document.querySelector(`#card-${id}`).remove();
-        handleClosePopup(popupDelete);
       });
   }
   handleSubmit(makeRequest, evt, 'Удаление...', false);
