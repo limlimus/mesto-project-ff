@@ -1,4 +1,4 @@
-// можно сделать универсальную функцию управления текстом кнопки с 3 и 4 необязательными аргументами
+// универсальная функция управления текстом кнопки
 function renderLoading(
   isLoading,
   button,
@@ -12,7 +12,8 @@ function renderLoading(
   }
 }
 
-function handleSubmit(request, evt, loadingText = 'Сохранение...') {
+// универсальная функция обработки сабмита
+function handleSubmit(request, evt, loadingText = 'Сохранение...', withReset) {
   evt.preventDefault();
 
   const submitButton = evt.submitter;
@@ -20,7 +21,9 @@ function handleSubmit(request, evt, loadingText = 'Сохранение...') {
   renderLoading(true, submitButton, initialText, loadingText);
   request()
     .then(() => {
-      evt.target.reset();
+      if (withReset) {
+        evt.target.reset();
+      }
     })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
@@ -30,6 +33,7 @@ function handleSubmit(request, evt, loadingText = 'Сохранение...') {
     });
 }
 
+// универсальная функция обработки ошибки
 function handleServerError(err) {
   console.log('Ошибка:', err);
 }

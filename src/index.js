@@ -68,13 +68,10 @@ function handleProfileSubmit(evt) {
       .then((profile) => {
         profileName.textContent = profile.name;
         profileJob.textContent = profile.about;
-      })
-      .catch(handleServerError)
-      .finally(() => {
         handleClosePopup(popupEdit);
       });
   }
-  handleSubmit(makeRequest, evt);
+  handleSubmit(makeRequest, evt, true);
 }
 
 // функция заполнения формы новой карты
@@ -83,13 +80,10 @@ function handleCardSubmit(evt, cb) {
     return postNewCard(inputPlace.value, inputLink.value)
       .then((newCard) => {
         cb(newCard);
-      })
-      .catch(handleServerError)
-      .finally(() => {
         handleClosePopup(popupNewCard);
       });
   }
-  handleSubmit(makeRequest, evt);
+  handleSubmit(makeRequest, evt, true);
 }
 
 // функция редактирования аватара
@@ -99,13 +93,9 @@ function handleEditProfile(evt) {
       .then((res) => {
         handleClosePopup(popupNewAvatar);
         profileAvatar.style = `background-image: url('${res.avatar}')`;
-      })
-      .catch(handleServerError)
-      .finally(() => {
-        handleClosePopup(popupNewAvatar);
       });
   }
-  handleSubmit(makeRequest, evt);
+  handleSubmit(makeRequest, evt, true);
 }
 
 // функция удаления карты
@@ -116,13 +106,10 @@ function handleCardDeleteSubmit(evt) {
       .then(() => {
         handleClosePopup(popupDelete);
         document.querySelector(`#card-${id}`).remove();
-      })
-      .catch(handleServerError)
-      .finally(() => {
         handleClosePopup(popupDelete);
       });
   }
-  handleSubmit(makeRequest, evt, 'Удаление...');
+  handleSubmit(makeRequest, evt, 'Удаление...', false);
 }
 
 // слушатель на кнопку, открывающую попап popupEdit
